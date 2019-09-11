@@ -12,18 +12,18 @@ namespace EventCatalogAPI.Data
     {
        public CatalogEventContext(DbContextOptions options):base(options)
         { }
-       public DbSet<EventType> CatalogTypes { get; set; }
-       public DbSet<EventLocation> CatalogLocations { get; set; }
-       public DbSet<Event> CatalogEvents { get; set; }
+       public DbSet<EventType> EventTypes { get; set; }
+       public DbSet<EventLocation> EventLocations { get; set; }
+       public DbSet<Event> Events { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<EventType>(ConfigureCatalogType);
-            modelBuilder.Entity<EventLocation>(ConfigureCatalogLocation);
-            modelBuilder.Entity<Event>(ConfigureCatalogEvents);
+            modelBuilder.Entity<EventType>(ConfigureEventType);
+            modelBuilder.Entity<EventLocation>(ConfigureEventLocation);
+            modelBuilder.Entity<Event>(ConfigureEvents);
         }
 
-        private void ConfigureCatalogEvents(EntityTypeBuilder<Event> builder)
+        private void ConfigureEvents(EntityTypeBuilder<Event> builder)
         {
             builder.ToTable("Events");
             builder.Property(e => e.Id)
@@ -54,7 +54,7 @@ namespace EventCatalogAPI.Data
 
         }
 
-        private void ConfigureCatalogLocation(EntityTypeBuilder<EventLocation> builder)
+        private void ConfigureEventLocation(EntityTypeBuilder<EventLocation> builder)
         {
             builder.ToTable("CatalogLocation");
             builder.Property(l =>l.Id)
@@ -63,9 +63,21 @@ namespace EventCatalogAPI.Data
             builder.Property(l =>l.Name)
                 .IsRequired()
                 .HasMaxLength(100);
+            builder.Property(l => l.AddressLine1)
+                .IsRequired()
+                .HasMaxLength(100);
+            builder.Property(l => l.AddressLine2)
+                .IsRequired()
+                .HasMaxLength(100);
+            builder.Property(l => l.city)
+                .IsRequired()
+                .HasMaxLength(50);
+            builder.Property(l => l.Zipcode)
+                .IsRequired()
+                .HasMaxLength(20);
         }
 
-        private void ConfigureCatalogType(EntityTypeBuilder<EventType> builder)
+        private void ConfigureEventType(EntityTypeBuilder<EventType> builder)
         {
             builder.ToTable("CatalogTypes");
             builder.Property(t => t.Id)
