@@ -11,4 +11,4 @@ namespace EventCatalogAPI.Domain
         public string Name { get; set; }
 
     }
-}
+} 

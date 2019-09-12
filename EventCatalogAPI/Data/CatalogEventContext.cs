@@ -13,13 +13,13 @@ namespace EventCatalogAPI.Data
        public CatalogEventContext(DbContextOptions options):base(options)
         { }
        public DbSet<EventType> EventTypes { get; set; }
-       public DbSet<EventLocation> EventLocations { get; set; }
+       public DbSet<EventOrganisation> EventLocations { get; set; }
        public DbSet<Event> Events { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<EventType>(ConfigureEventType);
-            modelBuilder.Entity<EventLocation>(ConfigureEventLocation);
+            modelBuilder.Entity<EventOrganisation>(ConfigureEventLocation);
             modelBuilder.Entity<Event>(ConfigureEvents);
         }
 
@@ -41,45 +41,45 @@ namespace EventCatalogAPI.Data
             builder.Property(e => e.totalSeats)
                 .IsRequired();
             builder.Property(e => e.Description)
-                .IsRequired()
-                .HasMaxLength(1000);
+                .IsRequired();
             builder.Property(e => e.Date)
                 .IsRequired();
             builder.HasOne(e => e.EventType)
                 .WithMany()
                 .HasForeignKey(e => e.EventTypeId);
-            builder.HasOne(e => e.EventLocation)
+            builder.HasOne(e => e.EventOrganisation)
                 .WithMany()
-                .HasForeignKey(e => e.EventLocationId);
+                .HasForeignKey(e => e.EventOrganisationId);
+            builder.Property(e => e.AddressLine1)
+                .IsRequired()
+                .HasMaxLength(100);
+            builder.Property(e => e.AddressLine2)
+                .IsRequired()
+                .HasMaxLength(100);
+            builder.Property(e => e.city)
+                .IsRequired()
+                .HasMaxLength(50);
+            builder.Property(e => e.Zipcode)
+                .IsRequired()
+                .HasMaxLength(20);
 
         }
 
-        private void ConfigureEventLocation(EntityTypeBuilder<EventLocation> builder)
+        private void ConfigureEventLocation(EntityTypeBuilder<EventOrganisation> builder)
         {
-            builder.ToTable("CatalogLocation");
-            builder.Property(l =>l.Id)
+            builder.ToTable("EventOrganisation");
+            builder.Property(o =>o.Id)
                 .IsRequired()
-                .ForSqlServerUseSequenceHiLo("Event_Location_hilo");
-            builder.Property(l =>l.Name)
-                .IsRequired()
-                .HasMaxLength(100);
-            builder.Property(l => l.AddressLine1)
+                .ForSqlServerUseSequenceHiLo("Event_Organisation_hilo");
+            builder.Property(o =>o.Name)
                 .IsRequired()
                 .HasMaxLength(100);
-            builder.Property(l => l.AddressLine2)
-                .IsRequired()
-                .HasMaxLength(100);
-            builder.Property(l => l.city)
-                .IsRequired()
-                .HasMaxLength(50);
-            builder.Property(l => l.Zipcode)
-                .IsRequired()
-                .HasMaxLength(20);
+
         }
 
         private void ConfigureEventType(EntityTypeBuilder<EventType> builder)
         {
-            builder.ToTable("CatalogTypes");
+            builder.ToTable("EventType");
             builder.Property(t => t.Id)
                 .IsRequired()
                 .ForSqlServerUseSequenceHiLo("Event_Type_hilo");
