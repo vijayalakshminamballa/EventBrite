@@ -21,6 +21,23 @@ namespace EventCatalogAPI.Data
             modelBuilder.Entity<EventType>(ConfigureEventType);
             modelBuilder.Entity<EventOrganisation>(ConfigureEventLocation);
             modelBuilder.Entity<Event>(ConfigureEvents);
+            modelBuilder.Entity<Ticket>(ConfigureTickets);
+        }
+
+        private void ConfigureTickets(EntityTypeBuilder<Ticket> builder)
+        {
+            builder.ToTable("Ticket");
+            builder.Property(t => t.Id)
+                .IsRequired()
+                .ForSqlServerUseSequenceHiLo("Event_Ticket_Hilo");
+            builder.Property(t => t.Price)
+             .IsRequired();
+            builder.Property(t=> t.AvailableSeats)
+                .IsRequired();
+            builder.Property(t => t.ReservedSeats)
+                .IsRequired();
+            builder.Property(t => t.TotalSeats)
+                .IsRequired();
         }
 
         private void ConfigureEvents(EntityTypeBuilder<Event> builder)
@@ -32,14 +49,7 @@ namespace EventCatalogAPI.Data
             builder.Property(e => e.Name)
                  .IsRequired()
                  .HasMaxLength(100);
-            builder.Property(e => e.Price)
-                .IsRequired();
-            builder.Property(e => e.availableSeats)
-                .IsRequired();
-            builder.Property(e => e.reservedSeats)
-                .IsRequired();
-            builder.Property(e => e.totalSeats)
-                .IsRequired();
+           
             builder.Property(e => e.Description)
                 .IsRequired();
             builder.Property(e => e.Date)
