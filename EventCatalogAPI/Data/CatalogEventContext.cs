@@ -19,7 +19,7 @@ namespace EventCatalogAPI.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<EventType>(ConfigureEventType);
-            modelBuilder.Entity<EventOrganisation>(ConfigureEventLocation);
+            modelBuilder.Entity<EventOrganisation>(ConfigureEventOrganisation);
             modelBuilder.Entity<Event>(ConfigureEvents);
             modelBuilder.Entity<Ticket>(ConfigureTickets);
         }
@@ -27,17 +27,20 @@ namespace EventCatalogAPI.Data
         private void ConfigureTickets(EntityTypeBuilder<Ticket> builder)
         {
             builder.ToTable("Ticket");
-            builder.Property(t => t.Id)
+            builder.Property(n => n.Id)
                 .IsRequired()
                 .ForSqlServerUseSequenceHiLo("Event_Ticket_Hilo");
-            builder.Property(t => t.Price)
+            builder.Property(n => n.Price)
              .IsRequired();
-            builder.Property(t=> t.AvailableSeats)
+            builder.Property(n=> n.AvailableSeats)
                 .IsRequired();
-            builder.Property(t => t.ReservedSeats)
+            builder.Property(n => n.ReservedSeats)
                 .IsRequired();
-            builder.Property(t => t.TotalSeats)
+            builder.Property(n=> n.TotalSeats)
                 .IsRequired();
+            builder.HasOne(n => n.Event)
+                .WithMany()
+                .HasForeignKey(n => n.EventId);
         }
 
         private void ConfigureEvents(EntityTypeBuilder<Event> builder)
@@ -49,17 +52,10 @@ namespace EventCatalogAPI.Data
             builder.Property(e => e.Name)
                  .IsRequired()
                  .HasMaxLength(100);
-           
             builder.Property(e => e.Description)
                 .IsRequired();
             builder.Property(e => e.Date)
                 .IsRequired();
-            builder.HasOne(e => e.EventType)
-                .WithMany()
-                .HasForeignKey(e => e.EventTypeId);
-            builder.HasOne(e => e.EventOrganisation)
-                .WithMany()
-                .HasForeignKey(e => e.EventOrganisationId);
             builder.Property(e => e.AddressLine1)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -72,10 +68,18 @@ namespace EventCatalogAPI.Data
             builder.Property(e => e.Zipcode)
                 .IsRequired()
                 .HasMaxLength(20);
+            builder.HasOne(e => e.EventType)
+               .WithMany()
+               .HasForeignKey(e => e.EventTypeId);
+            builder.HasOne(e => e.EventOrganisation)
+                .WithMany()
+                .HasForeignKey(e => e.EventOrganisationId);
+            builder.HasMany(e => e.Tickets)
+                .WithOne();
 
         }
 
-        private void ConfigureEventLocation(EntityTypeBuilder<EventOrganisation> builder)
+        private void ConfigureEventOrganisation(EntityTypeBuilder<EventOrganisation> builder)
         {
             builder.ToTable("EventOrganisation");
             builder.Property(o =>o.Id)

@@ -12,5 +12,7 @@ namespace EventCatalogAPI.Domain
         public int ReservedSeats { get; set; }
         public int TotalSeats { get; set; }
         public int Price { get; set; }
+        public int EventId { get; set; }
+        public virtual Event Event { get; set; }
     }
 }

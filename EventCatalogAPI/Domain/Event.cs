@@ -10,7 +10,7 @@ namespace EventCatalogAPI.Domain
         public int Id { get; set; }
         public string Name { get; set; }
          public string Description { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } 
         public string PictureUrl { get; set; }
         public string AddressLine1 { get; set; }
         public string AddressLine2 { get; set; }
@@ -20,8 +20,7 @@ namespace EventCatalogAPI.Domain
         public virtual EventType EventType { get; set; }
         public int EventOrganisationId { get; set; }
         public virtual EventOrganisation EventOrganisation{ get; set; }
-        public int TicketId { get; set; }
-        public virtual Ticket Ticket { get; set; }
+        public  List<Ticket> Tickets { get; set; }
 
 
     }
