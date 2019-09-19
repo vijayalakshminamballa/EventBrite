@@ -4,23 +4,26 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Threading.Tasks; 
 
 namespace EventCatalogAPI.Data
 {
     public class CatalogEventContext:DbContext
     {
-       public CatalogEventContext(DbContextOptions options):base(options)
+        internal object EventCategory;
+
+        public CatalogEventContext(DbContextOptions options):base(options)
         { }
-       public DbSet<EventType> EventTypes { get; set; }
-       public DbSet<EventOrganisation> EventLocations { get; set; }
+       public DbSet<EventType> EventType { get; set; }
+       public DbSet<EventCategory>EventCategories { get; set; }
        public DbSet<Event> Events { get; set; }
        public DbSet<Ticket> Ticket { get; set; }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<EventType>(ConfigureEventType);
-            modelBuilder.Entity<EventOrganisation>(ConfigureEventOrganisation);
+            modelBuilder.Entity<EventCategory>(ConfigureEventCategory);
             modelBuilder.Entity<Event>(ConfigureEvents);
             modelBuilder.Entity<Ticket>(ConfigureTickets);
         }
@@ -32,6 +35,8 @@ namespace EventCatalogAPI.Data
                 .IsRequired()
                 .ForSqlServerUseSequenceHiLo("Event_Ticket_Hilo");
             builder.Property(n => n.Price)
+             .IsRequired();
+            builder.Property(n => n.Title)
              .IsRequired();
             builder.Property(n=> n.AvailableSeats)
                 .IsRequired();
@@ -57,36 +62,33 @@ namespace EventCatalogAPI.Data
                 .IsRequired();
             builder.Property(e => e.Date)
                 .IsRequired();
-            builder.Property(e => e.AddressLine1)
+            builder.Property(e => e.AddressLine)
                 .IsRequired()
                 .HasMaxLength(100);
-            builder.Property(e => e.AddressLine2)
-                .IsRequired()
-                .HasMaxLength(100);
-            builder.Property(e => e.city)
+            builder.Property(e => e.City)
                 .IsRequired()
                 .HasMaxLength(50);
-            builder.Property(e => e.Zipcode)
+            builder.Property(e => e.State)
                 .IsRequired()
-                .HasMaxLength(20);
+                .HasMaxLength(50);
             builder.HasOne(e => e.EventType)
                .WithMany()
                .HasForeignKey(e => e.EventTypeId);
-            builder.HasOne(e => e.EventOrganisation)
+            builder.HasOne(e => e.EventCategory)
                 .WithMany()
-                .HasForeignKey(e => e.EventOrganisationId);
-            builder.HasMany(e => e.Tickets)
-                .WithOne();
+                .HasForeignKey(e => e.EventCategoryId);
+            //builder.HasMany(e => e.t)
+            //    .WithOne();
 
         }
 
-        private void ConfigureEventOrganisation(EntityTypeBuilder<EventOrganisation> builder)
+        private void ConfigureEventCategory(EntityTypeBuilder<EventCategory> builder)
         {
-            builder.ToTable("EventOrganisation");
+            builder.ToTable("EventCategory");
             builder.Property(o =>o.Id)
                 .IsRequired()
-                .ForSqlServerUseSequenceHiLo("Event_Organisation_hilo");
-            builder.Property(o =>o.Name)
+                .ForSqlServerUseSequenceHiLo("Event_Category_hilo");
+            builder.Property(o =>o.Category)
                 .IsRequired()
                 .HasMaxLength(100);
 
@@ -98,7 +100,7 @@ namespace EventCatalogAPI.Data
             builder.Property(t => t.Id)
                 .IsRequired()
                 .ForSqlServerUseSequenceHiLo("Event_Type_hilo");
-            builder.Property(t => t.Name)
+            builder.Property(t => t.Type)
                  .IsRequired()
                  .HasMaxLength(100);
         }
