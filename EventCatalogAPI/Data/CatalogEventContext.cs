@@ -13,14 +13,14 @@ namespace EventCatalogAPI.Data
        public CatalogEventContext(DbContextOptions options):base(options)
         { }
        public DbSet<EventType> EventTypes { get; set; }
-       public DbSet<EventOrganisation> EventLocations { get; set; }
+       public DbSet<EventCatagory> EventCatagory { get; set; }
        public DbSet<Event> Events { get; set; }
        public DbSet<Ticket> Ticket { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<EventType>(ConfigureEventType);
-            modelBuilder.Entity<EventOrganisation>(ConfigureEventOrganisation);
+            modelBuilder.Entity<EventCatagory>(ConfigureEventCatagory);
             modelBuilder.Entity<Event>(ConfigureEvents);
             modelBuilder.Entity<Ticket>(ConfigureTickets);
         }
@@ -80,7 +80,7 @@ namespace EventCatalogAPI.Data
 
         }
 
-        private void ConfigureEventOrganisation(EntityTypeBuilder<EventOrganisation> builder)
+        private void ConfigureEventCatagory(EntityTypeBuilder<EventCatagory> builder)
         {
             builder.ToTable("EventOrganisation");
             builder.Property(o =>o.Id)
