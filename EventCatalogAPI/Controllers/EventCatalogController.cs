@@ -79,7 +79,7 @@ namespace EventCatalogAPI.Controllers
                 root.LongCountAsync();
 
             var events = await root
-                .OrderBy(c => c.Name)
+                .OrderBy(e => e.Name)
                 .Skip(pageIndex * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -89,10 +89,31 @@ namespace EventCatalogAPI.Controllers
             return Ok(events);
         }
 
-        private List<Event> ChangePictureUrl(object events)
+        private List<Event> ChangePictureUrl(List<Event> events)
         {
-            throw new NotImplementedException();
+            events.ForEach(
+                c => c.PictureUrl = c.PictureUrl
+                        .Replace("http://externalcatalogbaseurltobereplaced",
+                        _config["ExternalCatalogBaseUrl"]));
+            return events;
+
         }
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> EventType()
+        {
+            var items = await _context.EventType.ToListAsync();
+            return Ok(items);
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> EventCategory()
+        {
+            var items = await _context.EventCategories.ToListAsync();
+            return Ok(items);
+        }
+
     }
 }
 

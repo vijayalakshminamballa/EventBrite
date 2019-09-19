@@ -18,7 +18,7 @@ namespace EventCatalogAPI.Data
        public DbSet<EventCategory>EventCategories { get; set; }
        public DbSet<Event> Events { get; set; }
        public DbSet<Ticket> Ticket { get; set; }
-        
+        public object EventTypes { get; internal set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -77,8 +77,6 @@ namespace EventCatalogAPI.Data
             builder.HasOne(e => e.EventCategory)
                 .WithMany()
                 .HasForeignKey(e => e.EventCategoryId);
-            //builder.HasMany(e => e.t)
-            //    .WithOne();
 
         }
 
