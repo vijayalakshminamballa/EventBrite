@@ -115,7 +115,7 @@ namespace EventCatalogAPI.Controllers
         }
 
         [HttpGet]
-        [Route("[action]/city/{name:minlength(1)}")]
+        [Route("[action]/city/{City:minlength(1)}")]
         public async Task<IActionResult> Events(string City,
          [FromQuery] int pageSize = 6,
          [FromQuery] int pageIndex = 0)
