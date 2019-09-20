@@ -29,8 +29,8 @@ namespace EventCatalogAPI.Controllers
           [FromQuery] int pageSize = 6)
         {
             var eventsCount = await
-                _context.Events.LongCountAsync();
-            var events = await _context.Events
+                _context.EventItem.LongCountAsync();
+            var events = await _context.EventItem
                 .OrderBy(e => e.Name)
                 .Skip(pageIndex * pageSize)
                 .Take(pageSize)
@@ -51,7 +51,7 @@ namespace EventCatalogAPI.Controllers
         [FromQuery] int pageIndex = 0,
         [FromQuery] int pageSize = 5)
         {
-            var root = (IQueryable<Event>)_context.Events;
+            var root = (IQueryable<EventItem>)_context.EventItem;
             if (eventTypeId.HasValue)
             {
                 root =
@@ -89,7 +89,7 @@ namespace EventCatalogAPI.Controllers
             return Ok(events);
         }
 
-        private List<Event> ChangePictureUrl(List<Event> events)
+        private List<EventItem> ChangePictureUrl(List<EventItem> events)
         {
             events.ForEach(
                 c => c.PictureUrl = c.PictureUrl

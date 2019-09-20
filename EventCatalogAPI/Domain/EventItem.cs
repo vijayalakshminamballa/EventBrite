@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace EventCatalogAPI.Domain
 {
-    public class Event
+    public class EventItem
     {
         public int Id { get; set; }
         public string Name { get; set; }
