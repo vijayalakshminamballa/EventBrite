@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using EventCatalogAPI.Data;
 using EventCatalogAPI.Domain;
@@ -26,7 +28,7 @@ namespace EventCatalogAPI.Controllers
         [Route("[action]")]
         public async Task<IActionResult> Events(
           [FromQuery] int pageIndex = 0,
-          [FromQuery] int pageSize = 6)
+          [FromQuery] int pageSize = 5)
         {
             var eventsCount = await
                 _context.EventItem.LongCountAsync();
@@ -36,18 +38,17 @@ namespace EventCatalogAPI.Controllers
                 .Take(pageSize)
                 .ToListAsync();
             events = ChangePictureUrl(events);
-
             return Ok(events);
         }
 
         [HttpGet]
-        [Route("[action]/type/{EventTypeId}/Category/{EventCategoryId}/location/{City}/Date/{Date}")]
-        public async Task<IActionResult> Events(
+        [Route("[action]/type/{eventTypeId}/category/{eventCategoryId}/location/{city}/Date/{startDatestr}/{endDatestr}")]
+        public async Task<IActionResult> BrowseEvents(
         int? eventTypeId,
         int? eventCategoryId,
         string city,
-        DateTime? StartDate,
-        DateTime?EndDate,
+        string startDateStr,
+        string endDateStr,
         [FromQuery] int pageIndex = 0,
         [FromQuery] int pageSize = 5)
         {
@@ -62,17 +63,18 @@ namespace EventCatalogAPI.Controllers
                 root =
                     root.Where(e => e.EventCategoryId == eventCategoryId);
             }
-            
+
             if (!String.IsNullOrEmpty(city))
             {
                 root =
                     root.Where(e => e.City == city);
             }
-            if(StartDate.HasValue && EndDate.HasValue)
+            if (!String.IsNullOrEmpty(startDateStr) && !String.IsNullOrEmpty(endDateStr))
             {
 
-                root = root.Where(e => e.Date > StartDate && e.Date < EndDate);
-
+                DateTime StartDate = DateTime.ParseExact(startDateStr, "yyyyMMdd", CultureInfo.InvariantCulture);
+                DateTime EndDate = DateTime.ParseExact(endDateStr, "yyyyMMdd", CultureInfo.InvariantCulture);
+                root = root.Where(e => e.Date >= StartDate && e.Date <= EndDate);
             }
 
             var itemsCount = await
@@ -89,6 +91,25 @@ namespace EventCatalogAPI.Controllers
             return Ok(events);
         }
 
+        [HttpGet]
+        [Route("[action]/Name/{Name:minlength(1)}")]
+        public async Task<IActionResult> BrowseEvent(string Name,
+        [FromQuery] int pageSize = 5,
+        [FromQuery] int pageIndex = 0)
+        {
+            var totalEvents = await _context.EventItem
+                .Where(e => e.Name.StartsWith(Name))
+                .LongCountAsync();
+            var events = await _context.EventItem
+                .Where(e => e.Name.StartsWith(Name))
+                .OrderBy(c => c.Name)
+                .Skip(pageSize * pageIndex)
+                .Take(pageSize)
+                .ToListAsync();
+            events = ChangePictureUrl(events);
+            return Ok(events);
+        }
+       
         private List<EventItem> ChangePictureUrl(List<EventItem> events)
         {
             events.ForEach(
@@ -115,6 +136,8 @@ namespace EventCatalogAPI.Controllers
         }
 
     }
+
+
 }
 
 
