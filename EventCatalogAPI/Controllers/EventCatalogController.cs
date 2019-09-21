@@ -135,6 +135,26 @@ namespace EventCatalogAPI.Controllers
             return Ok(items);
         }
 
+        [HttpGet]
+        [Route("[action]/city/{City:minlength(1)}")]
+        public async Task<IActionResult> Events(string City,
+         [FromQuery] int pageSize = 6,
+         [FromQuery] int pageIndex = 0)
+        {
+            var totalEvents = await _context.EventItem
+                .Where(e => e.City.StartsWith(City))
+                .LongCountAsync();
+            var events = await _context.EventItem
+                .Where(e => e.City.StartsWith(City))
+                .OrderBy(c => c.City)
+                .Skip(pageSize * pageIndex)
+                .Take(pageSize)
+                .ToListAsync();
+            events = ChangePictureUrl(events);
+
+           
+            return Ok(events);
+        }
     }
 
 
