@@ -93,7 +93,7 @@ namespace EventCatalogAPI.Controllers
 
         [HttpGet]
         [Route("[action]/Name/{Name:minlength(1)}")]
-        public async Task<IActionResult> BrowseEvent(string Name,
+        public async Task<IActionResult> BrowseEventsByName(string Name,
         [FromQuery] int pageSize = 5,
         [FromQuery] int pageIndex = 0)
         {
@@ -109,7 +109,8 @@ namespace EventCatalogAPI.Controllers
             events = ChangePictureUrl(events);
             return Ok(events);
         }
-       
+
+
         private List<EventItem> ChangePictureUrl(List<EventItem> events)
         {
             events.ForEach(
@@ -136,28 +137,24 @@ namespace EventCatalogAPI.Controllers
         }
 
         [HttpGet]
-        [Route("[action]/city/{City:minlength(1)}")]
-        public async Task<IActionResult> Events(string City,
+        [Route("[action]/city/{CityPrefix:minlength(1)}")]
+        public async Task<IActionResult> CityDropDown(string CityPrefix,
          [FromQuery] int pageSize = 6,
          [FromQuery] int pageIndex = 0)
         {
             var totalEvents = await _context.EventItem
-                .Where(e => e.City.StartsWith(City))
-                .LongCountAsync();
-            var events = await _context.EventItem
-                .Where(e => e.City.StartsWith(City))
-                .OrderBy(c => c.City)
+           .Where(e => e.Name.StartsWith(CityPrefix))
+           .LongCountAsync();
+            var cities = await _context.EventItem
+                .Where(e => e.City.StartsWith(CityPrefix))
+                .OrderBy(e => e.City)
+                .Select(e => e.City).Distinct()
                 .Skip(pageSize * pageIndex)
                 .Take(pageSize)
                 .ToListAsync();
-            events = ChangePictureUrl(events);
-
-           
-            return Ok(events);
+            return Ok(cities);
         }
     }
-
-
 }
 
 
@@ -165,6 +162,7 @@ namespace EventCatalogAPI.Controllers
 
 
 
-        
-    
+
+
+
 
