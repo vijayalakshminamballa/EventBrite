@@ -27,11 +27,17 @@ namespace EventCatalogAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddDbContext<CatalogEventContext>(Options =>
-            Options.UseSqlServer(Configuration["ConnectionString"]));
+            var server = Configuration["DatabaseServer"];
+            var database = Configuration["DatabaseName"];
+            var user = Configuration["DatabaseUser"];
+            var password = Configuration["DatabasePassword"];
+            var connectionString = $"Server={server};Database={database};User ID={user};Password={password}";
+            services.AddDbContext<CatalogEventContext>(options =>
+                    options.UseSqlServer(connectionString));
+
 
             services.AddSwaggerGen(options =>
-            {
+            { 
                 options.DescribeAllEnumsAsStrings();
                 options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
                 {

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace EventCatalogAPI.Data
 {
     public class CatalogEventContext:DbContext
-    {
+    {           
 
         public CatalogEventContext(DbContextOptions options):base(options)
         { }
