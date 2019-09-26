@@ -143,6 +143,7 @@ namespace EventCatalogAPI.Controllers
                 Name = Event.Name,
                 Price = Event.Price,
                 Date=Event.Date,
+                Organizer=Event.Organizer,
                 AddressLine=Event.AddressLine,
                 City=Event.City,
                 State=Event.State,
@@ -158,7 +159,7 @@ namespace EventCatalogAPI.Controllers
         public async Task<IActionResult> GetEventById(int id)
         {
             var item = await _context.EventItem
-             .FirstOrDefaultAsync(e => e.Id == id);
+             .SingleOrDefaultAsync(e => e.Id == id);
             return Ok(item);
         }
 
@@ -167,7 +168,7 @@ namespace EventCatalogAPI.Controllers
         public async Task<IActionResult> DeleteEvent(int id)
         {
             var item = await _context.EventItem
-           .FirstOrDefaultAsync(e => e.Id == id);
+           .SingleOrDefaultAsync(e => e.Id == id);
             _context.EventItem.Remove(item);
             await _context.SaveChangesAsync();
             return Ok(item);
@@ -202,18 +203,31 @@ namespace EventCatalogAPI.Controllers
         
         [HttpGet]
         [Route("[action]/city/{CityPrefix:minlength(1)}")]
-        public async Task<IActionResult> CityDropDown(string CityPrefix)
+        public async Task<IActionResult> CityDropDown(string CityPrefix,
+        [FromQuery] int pageSize = 5,
+        [FromQuery] int pageIndex = 0)
 
         {
-           var totalEvents = await _context.EventItem
-           .Where(e => e.Name.StartsWith(CityPrefix))
+           var cityCount= await _context.EventItem
+           .Where(e => e.City.StartsWith(CityPrefix))
+           .Select(e=>e.City)
+           .Distinct()
            .LongCountAsync();
             var cities = await _context.EventItem
                 .Where(e => e.City.StartsWith(CityPrefix))
                 .OrderBy(e => e.City)
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize)
                 .Select(e => e.City).Distinct()
                 .ToListAsync();
-            return Ok(cities);
+            var model = new PaginatedEventsViewModel<string>
+            {
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                Count = cityCount,
+                Data = cities
+            };
+            return Ok(model);
         }
     }
 }
