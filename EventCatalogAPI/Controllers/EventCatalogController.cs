@@ -154,6 +154,22 @@ namespace EventCatalogAPI.Controllers
             return CreatedAtAction(nameof(GetEventById), new { id = item.Id }, item);
         }
 
+        [HttpPut]
+        [Route("[action]")]
+        public async Task<IActionResult> UpdateEvent([FromBody] EventItem eventToUpdate)
+        {
+            var eventUpdate = await _context.EventItem.AsNoTracking()
+                .SingleOrDefaultAsync(e => e.Id == eventToUpdate.Id);
+            if (eventUpdate == null)
+            {
+                return NotFound(new { Message = $"Event with id {eventToUpdate.Id} not found." });
+            }
+            eventUpdate = eventToUpdate;
+            _context.EventItem.Update(eventUpdate);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetEventById), new { id = eventToUpdate.Id }, eventToUpdate);
+        }
+
         [HttpGet]
         [Route("[action]/Id/{id}")]
         public async Task<IActionResult> GetEventById(int id)
