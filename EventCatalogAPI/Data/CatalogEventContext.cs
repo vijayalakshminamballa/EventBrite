@@ -53,6 +53,8 @@ namespace EventCatalogAPI.Data
             builder.Property(e => e.State)
                 .IsRequired()
                 .HasMaxLength(50);
+            builder.Property(e => e.EventCapacity)
+               .IsRequired();
             builder.HasOne(e => e.EventType)
                .WithMany()
                .HasForeignKey(e => e.EventTypeId);

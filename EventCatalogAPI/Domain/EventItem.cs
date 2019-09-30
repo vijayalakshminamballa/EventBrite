@@ -17,6 +17,7 @@ namespace EventCatalogAPI.Domain
         public string AddressLine { get; set; }
         public string City { get; set; }
         public string State{ get; set; }
+        public int EventCapacity { get; set; }
         public int EventTypeId { get; set; }
         public virtual EventType EventType { get; set; } 
         public int EventCategoryId { get; set; } 
