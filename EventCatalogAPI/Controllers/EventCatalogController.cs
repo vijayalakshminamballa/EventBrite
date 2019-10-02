@@ -159,7 +159,8 @@ namespace EventCatalogAPI.Controllers
         public async Task<IActionResult> UpdateEvent([FromBody] EventItem eventToUpdate)
         {
             var eventUpdate = await _context.EventItem.AsNoTracking()
-                .SingleOrDefaultAsync(e => e.Id == eventToUpdate.Id);
+               .SingleOrDefaultAsync(e => e.Id == eventToUpdate.Id);
+               
             if (eventUpdate == null)
             {
                 return NotFound(new { Message = $"Event with id {eventToUpdate.Id} not found." });
@@ -172,14 +173,13 @@ namespace EventCatalogAPI.Controllers
 
         [HttpPut]
         [Route("[action]/id/{id}/quantity/{quantity}")]
-        public async Task<IActionResult> DecreaseEventCapacity(int id, int quantity)
+        public async Task<IActionResult> UpdateEventCapacity(int id, int quantity)
         {
             var item = await _context.EventItem
-             .SingleOrDefaultAsync(e => e.Id == id);
-
-            item.EventCapacity = item.EventCapacity + quantity;
-            var eventUpdate = await _context.EventItem.AsNoTracking()
-                .SingleOrDefaultAsync(e => e.Id == item.Id);
+           .SingleOrDefaultAsync(e => e.Id == id);
+           item.EventCapacity = item.EventCapacity + quantity;
+            var eventUpdate = await _context.EventItem
+                 .SingleOrDefaultAsync(e => e.Id == item.Id);
             if (eventUpdate == null)
             {
                 return NotFound(new { Message = $"Event with id {item.Id} not found." });
