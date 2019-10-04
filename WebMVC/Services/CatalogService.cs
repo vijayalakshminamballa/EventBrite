@@ -18,14 +18,11 @@ namespace WebMVC.Services
         public CatalogService(IConfiguration config,
             IHttpClient client)
         {
-            _baseUri = $"{config["EventCatalogUrl"]}/api/catalog/";
+            _baseUri = $"{config["CatalogUrl"]}/api/EventCatalog/";
             _client = client;
         }
 
-        public Task<EventCatalog> GetCatalogItemsAsync(int page, int size, int? category, int? type, string city, string startDate, string endDate)
-        {
-            throw new NotImplementedException();
-        }
+
 
         public async Task<IEnumerable<SelectListItem>> GetCategoriesAsync()
         {
@@ -40,14 +37,14 @@ namespace WebMVC.Services
                     Selected = true
                 }
             };
-            var brands = JArray.Parse(dataString);
-            foreach (var brand in brands)
+            var categories = JArray.Parse(dataString);
+            foreach (var category in categories)
             {
                 items.Add(
                     new SelectListItem
                     {
-                        Value = brand.Value<string>("id"),
-                        Text = brand.Value<string>("category")
+                        Value = category.Value<string>("id"),
+                        Text = category.Value<string>("category")
                     }
                  );
             }
@@ -66,6 +63,7 @@ namespace WebMVC.Services
 
         }
 
+
         public async Task<IEnumerable<SelectListItem>> GetTypesAsync()
         {
             var typeUri = ApiPaths.Catalog.GetAllCategories(_baseUri);
@@ -79,14 +77,14 @@ namespace WebMVC.Services
                     Selected = true
                 }
             };
-            var brands = JArray.Parse(dataString);
-            foreach (var brand in brands)
+            var types = JArray.Parse(dataString);
+            foreach (var type in types)
             {
                 items.Add(
                     new SelectListItem
                     {
-                        Value = brand.Value<string>("id"),
-                        Text = brand.Value<string>("type")
+                        Value = type.Value<string>("id"),
+                        Text = type.Value<string>("type")
                     }
                  );
             }

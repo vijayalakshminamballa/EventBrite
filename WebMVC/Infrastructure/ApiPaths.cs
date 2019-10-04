@@ -11,25 +11,30 @@ namespace WebMVC.Infrastructure
         {
             public static string GetAllTypes(string baseUri)
             {
-                return $"{baseUri}EventTypes";
+                return $"{baseUri}EventType";
             }
             public static string GetAllCategories(string baseUri)
             {
-                return $"{baseUri}EventCategories";
+                return $"{baseUri}EventCategory";
             }
             public static string GetAllEventItems(string baseUri,
                int page, int take, int? category, int? type,string city,string startDate,string endDate)
             {
                 var filterQs = string.Empty;
 
-                if (category.HasValue || type.HasValue)
+                if (category.HasValue || type.HasValue ||(!string.IsNullOrEmpty(city)) ||
+                   ((!string.IsNullOrEmpty(startDate)) && (!string.IsNullOrEmpty(endDate))))
                 {
-                    var categoryQs = (category.HasValue) ? category.Value.ToString() : "null";
-                    var typeQs = (type.HasValue) ? type.Value.ToString() : "null";
-                    filterQs = $"/type/{typeQs}/brand/{categoryQs}";
+                    var categoryQs = (category.HasValue) ? category.Value.ToString() : " ";
+                    var typeQs = (type.HasValue) ? type.Value.ToString() : " ";
+                    var cityQs = (!string.IsNullOrEmpty(city)) ? city : " ";
+                    var startDateQs = (!string.IsNullOrEmpty(startDate)) ? startDate : " ";
+                    var endDateQs =  (!string.IsNullOrEmpty(endDate))? endDate : " ";
+                   
+                   filterQs = $"/type/{typeQs}/category/{categoryQs}/location/{cityQs}/Date/{startDateQs}-{endDateQs}";
                 }
 
-                return $"{baseUri}items{filterQs}?pageIndex={page}&pageSize={take}";
+                return $"{baseUri}Events{filterQs}?pageIndex={page}&pageSize={take}";
 
             }
 

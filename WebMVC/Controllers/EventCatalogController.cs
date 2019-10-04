@@ -4,90 +4,58 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebMVC.Services;
+using WebMVC.ViewModels;
 
 namespace WebMVC.Controllers
 {
     public class EventCatalogController : Controller
     {
-        // GET: EventCatalog
-        public ActionResult Index()
-        {
-            return View();
-        }
+        private readonly ICatalogService _service;
 
-        // GET: EventCatalog/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+        public EventCatalogController(ICatalogService service) =>
+            _service = service;
 
-        // GET: EventCatalog/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
 
-        // POST: EventCatalog/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Index(
+            int? categoryFilterApplied,
+            int? typesFilterApplied,
+            string cityFilterApplied,
+            string startDateFilterApplied,
+            string endDateFilterApplied,
+            int? page)
         {
-            try
+            var itemsOnPage = 10;
+            var catalog =
+                await _service.GetEventItemsAsync(page ?? 0,
+                itemsOnPage, categoryFilterApplied, typesFilterApplied, cityFilterApplied,
+                startDateFilterApplied, endDateFilterApplied);
+
+            var vm = new EventCatalogIndexViewModel
             {
-                // TODO: Add insert logic here
+                PaginationInfo = new PaginationInfo
+                {
+                    ActualPage = page ?? 0,
+                    ItemsPerPage = itemsOnPage,
+                    TotalItems = catalog.Count,
+                    TotalPages = (int)Math.Ceiling((decimal)catalog.Count / itemsOnPage)
+                },
+                CatalogEvents = catalog.Data,
+                Categories = await _service.GetCategoriesAsync(),
+                Types = await _service.GetTypesAsync(),
+                CategoryFilterApplied = categoryFilterApplied ?? 0,
+                TypesFilterApplied = typesFilterApplied ?? 0,
+                CityFilterApplied = cityFilterApplied ?? " ",
+                StartDateFilterApplied = startDateFilterApplied ?? " ",
+                EndDateFilterApplied = endDateFilterApplied ?? " ",
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+
+            };
+            vm.PaginationInfo.Previous = (vm.PaginationInfo.ActualPage == 0) ? "is-disabled" : "";
+            vm.PaginationInfo.Next = (vm.PaginationInfo.ActualPage == vm.PaginationInfo.TotalPages - 1) ? "is-disabled" : "";
+
+            return View(vm);
         }
 
-        // GET: EventCatalog/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: EventCatalog/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: EventCatalog/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: EventCatalog/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

@@ -51,7 +51,7 @@ namespace EventCatalogAPI.Controllers
 
         [HttpGet]
         [Route("[action]/type/{eventTypeId}/category/{eventCategoryId}/location/{city}/Date/{startDatestr}/{endDatestr}")]
-        public async Task<IActionResult> BrowseEvents(
+        public async Task<IActionResult> Events(
         int? eventTypeId,
         int? eventCategoryId,
         string city,
