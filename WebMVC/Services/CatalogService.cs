@@ -50,23 +50,45 @@ namespace WebMVC.Services
             }
             return items;
         }
-
-
-        public async Task<EventCatalog> GetEventItemsAsync(int page, int size, int? category, int? type,
-            string city,string startDate,string endDate)
+        public async Task<IEnumerable<SelectListItem>> GetLocationsAsync()
         {
+            var locationUri = ApiPaths.Catalog.GetAllLocations(_baseUri);
+            var datastring = await _client.GetStringAsync(locationUri);
+            var items = new List<SelectListItem>
+            {
+                new SelectListItem
+                {
+                    Value=null,
+                    Text = "All",
+                    Selected = true
+                }
+            };
+            var locations = JArray.Parse(datastring);
+            foreach (var location in locations)
+            {
+                items.Add(
+                    new SelectListItem
+                    {
+                        Value = location.ToString(),
+                        Text = location.ToString(),
+                    }
+                 );
+            }
+            return items;
+        }
+         public async Task<EventCatalog> GetEventItemsAsync(int page, int size, int? category, int? type,
+            string city,string startDate,string endDate)
+         {
             var catalogItemsUri = ApiPaths.Catalog.GetAllEventItems(_baseUri,
                     page, size, category, type,city,startDate,endDate);
             var dataString = await _client.GetStringAsync(catalogItemsUri);
             var response = JsonConvert.DeserializeObject<EventCatalog>(dataString);
             return response;
 
-        }
-
-
+         }
         public async Task<IEnumerable<SelectListItem>> GetTypesAsync()
         {
-            var typeUri = ApiPaths.Catalog.GetAllCategories(_baseUri);
+            var typeUri = ApiPaths.Catalog.GetAllTypes(_baseUri);
             var dataString = await _client.GetStringAsync(typeUri);
             var items = new List<SelectListItem>
             {

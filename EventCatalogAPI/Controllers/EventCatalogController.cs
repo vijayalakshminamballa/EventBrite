@@ -265,6 +265,22 @@ namespace EventCatalogAPI.Controllers
             };
             return Ok(model);
         }
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> City()
+
+        {
+            var cityCount = await _context.EventItem
+            .Select(e => e.City)
+            .Distinct()
+            .LongCountAsync();
+            var cities = await _context.EventItem
+                .OrderBy(e => e.City)
+                .Select(e => e.City).Distinct()
+                .ToListAsync();
+
+            return Ok(cities);
+        }
     }
 }
 

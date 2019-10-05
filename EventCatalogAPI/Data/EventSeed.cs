@@ -39,7 +39,7 @@ namespace EventCatalogAPI.Data
             return new List<EventItem>()
             {
                 new EventItem() { EventTypeId= 1, EventCategoryId=1, Description ="International Food Truck Rally presented by the City of Tukwila",Name ="International Food Truck Rally",
-Date=DateTime.Parse("12/24/2019"),Price=30,Organizer="WestFieldSouthern Center",AddressLine= "Cross Roads Mall",City="Bellevue" ,State="WA",PictureUrl = "http://externalcatalogtobereplaced/api/pic/1",EventCapacity = 13 },
+Date=DateTime.Parse("12/24/2019"),Price=30,Organizer="WestFieldSouthern Center",AddressLine= "Cross Roads Mall",City="Bellevue" ,State="WA",PictureUrl = "http://externalcatalogbaseurltobereplaced/api/pic/1",EventCapacity = 13 },
 
                 new EventItem() { EventTypeId= 2,EventCategoryId=1,Description ="Cioppino Noir teaches you the basics of choosing the right seafood",Name ="Palisade Fresh Catch Series",
 Date=DateTime.Parse("12/12/2019"),Price=50,Organizer="Palesade Restaurent", AddressLine="Overlake Plaza",City= "Seattle",State="WA",PictureUrl = "http://externalcatalogbaseurltobereplaced/api/pic/2",EventCapacity = 23},
@@ -56,8 +56,8 @@ Date=DateTime.Parse("10/25/2019"),Price=54,Organizer="Entirely Technology",Addre
                 new EventItem() { EventTypeId= 2,EventCategoryId=2,Description ="This IoT training is a LIVE Instructor led training",Name ="IoT training  ",
 Date=DateTime.Parse("12/16/2019"),Price=45,Organizer="TrueVs",AddressLine="Safeco Plaza",City="Seattle",State="WA",PictureUrl = "http://externalcatalogbaseurltobereplaced/api/pic/6",EventCapacity = 19},
 
-                new EventItem() { EventTypeId= 2,EventCategoryId=3,Description ="Understanding your role as a product manager",Name ="Product Management Training ",
-Date=DateTime.Parse("11/18/2019"),Price=23,Organizer="Mind the Product",AddressLine="Seattle Learning Center",City="Seattle",State="WA",PictureUrl = "http://externalcatalogbaseurltobereplaced/api/pic/7",EventCapacity = 63},
+                new EventItem() { EventTypeId= 2,EventCategoryId=3,Description ="Create better products by design thinking",Name ="Master Design Thinking Fundamentals ",
+Date=DateTime.Parse("11/18/2019"),Price=23,Organizer="kat USOP",AddressLine="Seattle Learning Center",City="Seattle",State="WA",PictureUrl = "http://externalcatalogbaseurltobereplaced/api/pic/7",EventCapacity = 63},
 
                 new EventItem() { EventTypeId= 5,EventCategoryId=3,Description ="Webinar - Sales and Marketing Growth Strategies for 2019!",Name = "Sales and Marketing",
 Date=DateTime.Parse("10/25/2019"),Price=90,Organizer="Local SEO Search",AddressLine="Charlotte",City="Charlotte",State="NC",PictureUrl = "http://externalcatalogbaseurltobereplaced/api/pic/8",EventCapacity = 13 },

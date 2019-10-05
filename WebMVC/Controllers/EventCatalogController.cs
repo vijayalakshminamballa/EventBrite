@@ -12,24 +12,21 @@ namespace WebMVC.Controllers
     public class EventCatalogController : Controller
     {
         private readonly ICatalogService _service;
-
         public EventCatalogController(ICatalogService service) =>
             _service = service;
-
-
-        public async Task<IActionResult> Index(
+          public async Task<IActionResult> Index(
             int? categoryFilterApplied,
             int? typesFilterApplied,
-            string cityFilterApplied,
-            string startDateFilterApplied,
-            string endDateFilterApplied,
-            int? page)
+            int? page,
+          string cityFilterApplied,
+          string startDateFilterApplied,
+          string endDateFilterApplied)
         {
             var itemsOnPage = 10;
             var catalog =
                 await _service.GetEventItemsAsync(page ?? 0,
-                itemsOnPage, categoryFilterApplied, typesFilterApplied, cityFilterApplied,
-                startDateFilterApplied, endDateFilterApplied);
+                itemsOnPage, categoryFilterApplied, typesFilterApplied,cityFilterApplied,startDateFilterApplied, endDateFilterApplied);
+
 
             var vm = new EventCatalogIndexViewModel
             {
@@ -43,11 +40,12 @@ namespace WebMVC.Controllers
                 CatalogEvents = catalog.Data,
                 Categories = await _service.GetCategoriesAsync(),
                 Types = await _service.GetTypesAsync(),
+                Locations=await _service.GetLocationsAsync(),
                 CategoryFilterApplied = categoryFilterApplied ?? 0,
                 TypesFilterApplied = typesFilterApplied ?? 0,
                 CityFilterApplied = cityFilterApplied ?? " ",
-                StartDateFilterApplied = startDateFilterApplied ?? " ",
-                EndDateFilterApplied = endDateFilterApplied ?? " ",
+                StartDateFilterApplied = startDateFilterApplied??" ",
+                EndDateFilterApplied = endDateFilterApplied??" "
 
 
             };
