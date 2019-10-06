@@ -32,11 +32,11 @@ namespace WebMVC.Infrastructure
                 {
                     var categoryQs = (category.HasValue) ? category.Value.ToString() : " ";
                     var typeQs = (type.HasValue) ? type.Value.ToString() : " ";
-                    var cityQs = (!string.IsNullOrEmpty(city)) ? city : " ";
+                    var cityQs =((!string.IsNullOrEmpty(city) && (!city.Equals("All")))) ? city : " ";
                     var startDateQs = (!string.IsNullOrEmpty(startDate))? startDate: " ";
                     var endDateQs =  (!string.IsNullOrEmpty(endDate))? endDate: " ";
 
-                    filterQs = $"/type/{typeQs}/category/{categoryQs}/location/{cityQs}/Date/{startDateQs}/{endDateQs}/";
+                    filterQs = $"/type/{typeQs}/category/{categoryQs}/location/{cityQs}/Date/ / /";
                 }
 
                 return $"{baseUri}Events{filterQs}?pageIndex={page}&pageSize={take}";
