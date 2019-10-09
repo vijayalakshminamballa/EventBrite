@@ -60,22 +60,37 @@
                 <select asp-for="@Model.CityFilterApplied" asp-items="@Model.Locations" class="esh-catalog-filter"></select>
             </label>
             @*<div class="form-group">
-                @Html.LabelFor(m => m.StartDateFilterApplied, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.StartDateFilterApplied, "{0:yyyy-MM-ddThh:mm:ss}", new { @class = "form-control", type = "datetime-local" })
-                    @Html.ValidationMessageFor(m => m.StartDateFilterApplied, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
+            @Html.LabelFor(m => m.StartDateFilterApplied, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.StartDateFilterApplied, "{0:yyyy-MM-ddThh:mm:ss}", new { @class = "form-control", type = "datetime-local" })
+                @Html.ValidationMessageFor(m => m.StartDateFilterApplied, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
 
-            <label class="esh-catalog-label" data-title="Start Date">
-                  <input type="date" asp-for="@Model.StartDateFilterApplied" class="esh-catalog-filter" >
+
+            <label class="esh-catalog-label" data-title="Start Date" style="width:150px;">
+
+                <input type="date" asp-for="@Model.StartDateFilterApplied" class="esh-catalog-filter" >
+
             </label>
-
             <label class="esh-catalog-label" data-title="End Date">
-                   <select asp-for="@Model.EndDateFilterApplied" class="esh-catalog-filter"></select>
+
+                <input type="date" asp-for="@Model.EndDateFilterApplied" class="esh-catalog-filter">
+            </label>
+            <label class="esh-catalog-label" data-title="Date">
+                <select asp-for="@Model.DateFilterApplied" class="esh-catalog-filter">
+                    <option>Any Date</option>
+                    <option>Today</option>
+                    <option>Tomorrow</option>
+                    <option>This Weekend</option>
+                    <option>This Week</option>
+                    <option>Next Week</option>
+                    <option>This Month</option>
+                    <option>Next Month</option>
+                </select>
             </label>
             <input class="esh-catalog-send" type="image" src="~/images/arrow-right.svg" />
-            
+
         </form>
     </div>
     </section>

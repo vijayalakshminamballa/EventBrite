@@ -14,13 +14,18 @@ namespace WebMVC.ViewModels
         public IEnumerable<SelectListItem> Categories { get; set; }
         public IEnumerable<SelectListItem> Types { get; set; }
         public IEnumerable<SelectListItem> Locations { get; set; }
-
+       
+        public IEnumerable<SelectListItem> StartDate
+        { get; set; }
+        public IEnumerable<SelectListItem> EndDate       
+        { get; set; }
         public IEnumerable<EventItem> CatalogEvents { get; set; }
         
         public string CityFilterApplied { get; set; }
         //[DataType(DataType.Date)]
-        public string StartDateFilterApplied { get; set; }
-        public string EndDateFilterApplied { get; set; }
+        public string DateFilterApplied { get; set; }
+        public DateTime StartDateFilterApplied { get; set; }
+        public DateTime EndDateFilterApplied { get; set; }
         public int? CategoryFilterApplied { get; set; }
         public int? TypesFilterApplied { get; set; }
     }
