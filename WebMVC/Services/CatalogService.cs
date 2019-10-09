@@ -26,7 +26,6 @@ namespace WebMVC.Services
 
         public async Task<IEnumerable<SelectListItem>> GetCategoriesAsync()
         {
-
             var categoryUri = ApiPaths.Catalog.GetAllCategories(_baseUri);
             var dataString = await _client.GetStringAsync(categoryUri);
             var items = new List<SelectListItem>
@@ -77,11 +76,11 @@ namespace WebMVC.Services
             }
             return items;
         }
-         public async Task<EventCatalog> GetEventItemsAsync(
-             int page, int size, int? category, int? type, string city,string date, DateTime startDate, DateTime endDate)
+         public async Task<EventCatalog> GetEventItemsAsync(int page, int size, int? category, int? type,
+            string city,string date)
          {
             var catalogItemsUri = ApiPaths.Catalog.GetAllEventItems(_baseUri,
-                    page, size, category, type,city,date,startDate,endDate);
+                    page, size, category, type,city,date);
             var dataString = await _client.GetStringAsync(catalogItemsUri);
             var response = JsonConvert.DeserializeObject<EventCatalog>(dataString);
             return response;

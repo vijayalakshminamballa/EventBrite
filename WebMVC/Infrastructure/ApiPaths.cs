@@ -22,24 +22,20 @@ namespace WebMVC.Infrastructure
 
                 return $"{baseUri}City";
             }
-
             public static string GetAllEventItems(string baseUri,
-               int page, int take, int? category, int?  type, string city,string date, DateTime startDate, DateTime endDate)
+               int page, int take, int? category, int?  type, string city, string date)
             {
                 var filterQs = string.Empty;
 
-                if (category.HasValue 
-                    || type.HasValue
-                    || !string.IsNullOrEmpty(city) 
-                    || startDate != new DateTime() 
-                    || endDate != new DateTime())
+                if (category.HasValue || type.HasValue || (!string.IsNullOrEmpty(city)) ||
+                   ((!string.IsNullOrEmpty(date))))
                 {
                     var categoryQs = (category.HasValue) ? category.Value.ToString() : " ";
                     var typeQs = (type.HasValue) ? type.Value.ToString() : " ";
-                    var cityQs =((!string.IsNullOrEmpty(city) && (!city.Equals("All")))) ? city : " ";
-                    var startDateQs = (startDate != new DateTime()) ? startDate.ToString("yyyyMMdd") : " ";
-                    var endDateQs = (endDate != new DateTime()) ? endDate.ToString("yyyyMMdd") : " ";
+                    var cityQs = ((!string.IsNullOrEmpty(city) && (!city.Equals("All")))) ? city : " ";
 
+                    var startDateQs = " ";
+                    var endDateQs = " ";
                     if (date.Equals("Today"))
                     {
                         var currentDate = DateTime.Today;
@@ -76,29 +72,29 @@ namespace WebMVC.Infrastructure
                         int days = day - DayOfWeek.Monday;
                         var startDateOfThisWeek = DateTime.Now.AddDays(-days);
                         var startDateOfNextWeek = startDateOfThisWeek.AddDays(7);
-                        var endDateOfNextWeek = startDateOfNextWeek.AddDays(6);
+                        var endDateOfNextWeek = startDateOfNextWeek.AddDays(6);   
                         startDateQs = startDateOfNextWeek.ToString("yyyyMMdd");
                         endDateQs = endDateOfNextWeek.ToString("yyyyMMdd");
                     }
                     else if (date.Equals("This Month"))
                     {
                         var today = DateTime.Today;
-                        var startDateOfThisMonth = new DateTime(today.Year, today.Month, 1);
+                        var startDateOfThisMonth = new DateTime(today.Year, today.Month,1);
                         int days = DateTime.DaysInMonth(startDateOfThisMonth.Year, startDateOfThisMonth.Month);
-                        var endDateOfThisMonth = startDateOfThisMonth.AddDays(days - 1);
+                        var endDateOfThisMonth = startDateOfThisMonth.AddDays(days-1);
                         startDateQs = today.ToString("yyyyMMdd");
                         endDateQs = endDateOfThisMonth.ToString("yyyyMMdd");
                     }
-                    else if (date.Equals("Next Month"))
+                    else if(date.Equals("Next Month"))
                     {
                         var today = DateTime.Today;
-                        var startDateOfNextMonth = new DateTime(today.Year, today.Month, 1).AddMonths(1);
-                        int days = DateTime.DaysInMonth(startDateOfNextMonth.Year, startDateOfNextMonth.Month);
-                        var endDateOfNextMonth = startDateOfNextMonth.AddDays(days - 1);
+                        var startDateOfNextMonth = new DateTime(today.Year,today.Month,1).AddMonths(1);
+                        int days = DateTime.DaysInMonth(startDateOfNextMonth.Year,startDateOfNextMonth.Month);
+                        var endDateOfNextMonth = startDateOfNextMonth.AddDays(days-1);
                         startDateQs = startDateOfNextMonth.ToString("yyyyMMdd");
                         endDateQs = endDateOfNextMonth.ToString("yyyyMMdd");
                     }
-
+                
                     filterQs = $"/type/{typeQs}/category/{categoryQs}/location/{cityQs}/Date/{startDateQs}/{endDateQs}/";
                 }
 
@@ -108,6 +104,7 @@ namespace WebMVC.Infrastructure
 
 
         }
+
     }
 
     }

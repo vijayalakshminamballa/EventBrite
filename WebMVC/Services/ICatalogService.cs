@@ -9,9 +9,8 @@ namespace WebMVC.Services
 {
     public interface ICatalogService
     {
-
         Task<EventCatalog> GetEventItemsAsync(int page, int size,
-        int? category, int? type,string city,string date, DateTime startDate, DateTime endDate);
+        int? category, int? type,string city,string date);
         Task<IEnumerable<SelectListItem>> GetLocationsAsync();
         Task<IEnumerable<SelectListItem>> GetCategoriesAsync();
         Task<IEnumerable<SelectListItem>> GetTypesAsync();

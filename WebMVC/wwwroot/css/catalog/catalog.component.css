@@ -135,6 +135,11 @@
     text-align: center;
     text-transform: uppercase;
 }
+.esh-catalog-date {
+    font-size: 28px;
+    font-weight: 300;
+    text-align: center;
+}
 
 .esh-catalog-price {
     text-align: center;

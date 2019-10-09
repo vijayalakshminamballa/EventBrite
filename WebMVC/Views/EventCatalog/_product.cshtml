@@ -1,17 +1,21 @@
 ﻿@model WebMVC.Models.EventItem
 
-
-
-
     <form asp-controller="Cart" asp-action="AddToCart">
         <img class="esh-catalog-thumbnail" src="@Model.PictureUrl" />
-        <input class="esh-catalog-button" type="submit" value="[ ADD TO CART ]" />
+        <input class="esh-catalog-button" type="button" value="[ ADD TO CART ]" />
+        <div class="esh-catalog-date">
+           Date : <span style="color:red;font-weight:bold;text-align:center">@Model.Date.ToString("yyy/MM/dd") </span>
+        </div>
         <div class="esh-catalog-name">
-            <span>@Model.Name</span>
+            <span style="color:black;font-weight:bold;text-align:left">@Model.Name</span>
         </div>
         <div class="esh-catalog-price">
             <span>@Model.Price.ToString("N2")</span>
         </div>
+        @*<div class="esh-catalog-city">
+            <span>@Model.City</span>
+        </div>*@
+        
         <input type="hidden" asp-for="@Model.EventCategory" name="eventcategory" />
         <input type="hidden" asp-for="@Model.EventCategoryId" name="eventcategoryId" />
         <input type="hidden" asp-for="@Model.EventType" name="eventtype" />
@@ -27,8 +31,4 @@
         <input type="hidden" asp-for="@Model.Date" name="date" />
         <input type="hidden" asp-for="@Model.EventCapacity" name="eventCapacity" />
 
-
-
-
-
-    </form>
+ </form>

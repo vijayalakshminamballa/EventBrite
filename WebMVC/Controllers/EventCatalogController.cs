@@ -19,19 +19,13 @@ namespace WebMVC.Controllers
             int? typesFilterApplied,
             int? page,
           string cityFilterApplied,
-           string DateFilterApplied,
-          string startDateFilterApplied,
-          string endDateFilterApplied)
+          string DateFilterApplied)
         {
             var itemsOnPage = 10;
-           
+            var catalog =
+                await _service.GetEventItemsAsync(page ?? 0,
+                itemsOnPage, categoryFilterApplied, typesFilterApplied,cityFilterApplied,DateFilterApplied);
 
-           var startDate = new DateTime();
-           var endDate = DateTime.Now.AddDays(1);
-
-           DateTime.TryParse(startDateFilterApplied, out startDate);
-           DateTime.TryParse(endDateFilterApplied, out endDate);
-           var catalog = await _service.GetEventItemsAsync(page ?? 0, itemsOnPage, categoryFilterApplied, typesFilterApplied, cityFilterApplied,DateFilterApplied ,startDate, endDate);
 
             var vm = new EventCatalogIndexViewModel
             {
@@ -46,12 +40,12 @@ namespace WebMVC.Controllers
                 Categories = await _service.GetCategoriesAsync(),
                 Types = await _service.GetTypesAsync(),
                 Locations=await _service.GetLocationsAsync(),
-                CategoryFilterApplied = categoryFilterApplied?? 0,
+                CategoryFilterApplied = categoryFilterApplied ?? 0,
                 TypesFilterApplied = typesFilterApplied ?? 0,
                 CityFilterApplied = cityFilterApplied ?? " ",
-                DateFilterApplied = DateFilterApplied ?? " ",
-                StartDateFilterApplied = startDate,
-                EndDateFilterApplied = endDate
+                DateFilterApplied = DateFilterApplied??" ",
+
+
             };
             vm.PaginationInfo.Previous = (vm.PaginationInfo.ActualPage == 0) ? "is-disabled" : "";
             vm.PaginationInfo.Next = (vm.PaginationInfo.ActualPage == vm.PaginationInfo.TotalPages - 1) ? "is-disabled" : "";
