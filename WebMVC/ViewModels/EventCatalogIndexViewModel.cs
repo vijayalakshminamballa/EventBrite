@@ -19,8 +19,7 @@ namespace WebMVC.ViewModels
         
         public string CityFilterApplied { get; set; }
         //[DataType(DataType.Date)]
-        public string StartDateFilterApplied { get; set; }
-        public string EndDateFilterApplied { get; set; }
+        public string DateFilterApplied { get; set; }
         public int? CategoryFilterApplied { get; set; }
         public int? TypesFilterApplied { get; set; }
     }
