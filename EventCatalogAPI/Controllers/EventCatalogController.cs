@@ -78,16 +78,11 @@ namespace EventCatalogAPI.Controllers
                     root.Where(e => e.City == city);
             }
 
-            if (!string.IsNullOrWhiteSpace(startDateStr))
+            if (!String.IsNullOrEmpty(startDateStr) && !String.IsNullOrEmpty(endDateStr))
             {
                 DateTime StartDate = DateTime.ParseExact(startDateStr, "yyyyMMdd", CultureInfo.InvariantCulture);
-                root = root.Where(e => e.Date >= StartDate);
-            }
-
-            if (!string.IsNullOrWhiteSpace(endDateStr))
-            {
                 DateTime EndDate = DateTime.ParseExact(endDateStr, "yyyyMMdd", CultureInfo.InvariantCulture);
-                root = root.Where(e => e.Date <= EndDate);
+                root = root.Where(e => e.Date >= StartDate && e.Date <= EndDate);
             }
 
             var eventsCount = await
@@ -135,6 +130,7 @@ namespace EventCatalogAPI.Controllers
             };
             return Ok(model);
         }
+
 
         [HttpPost]
         [Route("[action]")]
@@ -286,17 +282,5 @@ namespace EventCatalogAPI.Controllers
 
             return Ok(cities);
         }
-
-      
     }
 }
-
-
-
-
-
-
-
-
-
-
