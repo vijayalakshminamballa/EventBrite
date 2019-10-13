@@ -15,6 +15,8 @@ namespace WebMVC.ViewModels
         public IEnumerable<SelectListItem> Types { get; set; }
         public IEnumerable<SelectListItem> Locations { get; set; }
         public IEnumerable<EventItem> CatalogEvents { get; set; }
+        public IEnumerable<EventItem> Events { get; set; }
+        public string NameFilterApplied { get; set; } 
         public string CityFilterApplied { get; set; }
         //[DataType(DataType.Date)]
         public string DateFilterApplied { get; set; }

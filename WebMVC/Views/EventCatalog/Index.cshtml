@@ -58,6 +58,11 @@
 <section class="esh-catalog-filters">
     <div class="container">
         <form asp-action="Index" asp-controller="EventCatalog" method="post">
+            <label class="esh-catalog-label">
+                <input class="esh-catalog-filter" id="NameFilterApplied" name="NameFilterApplied" type="text" 
+                       value="Search By Title" />
+                @*@Html.TextBoxFor(m => m.NameFilterApplied,"Enter Title Prefix", new { @class="esh-catalog-label"})*@
+            </label>
             <label class="esh-catalog-label" data-title="Category">
                 <select asp-for="@Model.CategoryFilterApplied" asp-items="@Model.Categories" class="esh-catalog-filter"></select>
             </label>
@@ -67,28 +72,21 @@
             <label class="esh-catalog-label" data-title="Location">
                 <select asp-for="@Model.CityFilterApplied" asp-items="@Model.Locations" class="esh-catalog-filter"></select>
             </label>
-            @*<div class="form-group">
-                @Html.LabelFor(m => m.StartDateFilterApplied, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.StartDateFilterApplied, "{0:yyyy-MM-ddThh:mm:ss}", new { @class = "form-control", type = "datetime-local" })
-                    @Html.ValidationMessageFor(m => m.StartDateFilterApplied, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
 
             <label class="esh-catalog-label" data-title="Date">
-                   <select asp-for="@Model.DateFilterApplied" class="esh-catalog-filter">
-                       <option>Any Date</option>
-                       <option>Today</option>
-                       <option>Tomorrow</option>
-                       <option>This Weekend</option>
-                       <option>This Week</option>
-                       <option>Next Week</option>
-                       <option>This Month</option>
-                       <option>Next Month</option>
-                   </select>
+                <select asp-for="@Model.DateFilterApplied" class="esh-catalog-filter">
+                    <option>Any Date</option>
+                    <option>Today</option>
+                    <option>Tomorrow</option>
+                    <option>This Weekend</option>
+                    <option>This Week</option>
+                    <option>Next Week</option>
+                    <option>This Month</option>
+                    <option>Next Month</option>
+                </select>
             </label>
             <input class="esh-catalog-send" type="image" src="~/images/arrow-right.svg" />
-            
+
         </form>
     </div>
     </section>

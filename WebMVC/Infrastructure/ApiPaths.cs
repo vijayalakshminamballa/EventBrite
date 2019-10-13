@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq; 
 using System.Threading.Tasks;
 
 namespace WebMVC.Infrastructure
@@ -22,16 +22,19 @@ namespace WebMVC.Infrastructure
 
                 return $"{baseUri}City";
             }
+
+
             public static string GetAllEventItems(string baseUri,
-               int page, int take, int? category, int?  type, string city, string date)
+               int page, int take, int? category, int?  type, string city,string name,string date)
             {
                 var filterQs = string.Empty;
 
-                if (category.HasValue || type.HasValue || (!string.IsNullOrEmpty(city)) ||
-                   ((!string.IsNullOrEmpty(date))))
+                if (category.HasValue || type.HasValue ||(!string.IsNullOrEmpty(name))||
+                    (!string.IsNullOrEmpty(city)) ||((!string.IsNullOrEmpty(date))))
                 {
                     var categoryQs = (category.HasValue) ? category.Value.ToString() : " ";
                     var typeQs = (type.HasValue) ? type.Value.ToString() : " ";
+                    var nameQs = (!string.IsNullOrEmpty(name)&&(!name.Equals("Search By Title"))) ? name : " ";
                     var cityQs = ((!string.IsNullOrEmpty(city) && (!city.Equals("All")))) ? city : " ";
 
                     var startDateQs = " ";
@@ -95,9 +98,8 @@ namespace WebMVC.Infrastructure
                         endDateQs = endDateOfNextMonth.ToString("yyyyMMdd");
                     }
                 
-                    filterQs = $"/type/{typeQs}/category/{categoryQs}/location/{cityQs}/Date/{startDateQs}/{endDateQs}/";
+                    filterQs = $"/type/{typeQs}/category/{categoryQs}/Name/{nameQs}/location/{cityQs}/Date/{startDateQs}/{endDateQs}/";
                 }
-
                 return $"{baseUri}Events{filterQs}?pageIndex={page}&pageSize={take}";
 
             }
