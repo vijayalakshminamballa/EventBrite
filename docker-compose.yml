@@ -25,6 +25,22 @@ services:
     depends_on:
       - mssqlserver
 
+  webmvc:
+    build:
+      context: .\webmvc
+      dockerfile: Dockerfile
+    image: jewels/webmvc
+    container_name: webshop
+    environment:
+      CatalogUrl: http://catalog
+      ASPNETCORE_ENVIRONMENT: Development
+    ports:
+      - "5209:80"
+    networks:
+      - frontend
+    depends_on:
+      - catalog
+
   mssqlserver:
     image: "microsoft/mssql-server-linux:latest"
     environment:
@@ -35,3 +51,6 @@ services:
       - "1450:1433"
     networks:
       - backend
+
+      
+      
