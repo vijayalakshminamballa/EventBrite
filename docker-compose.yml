@@ -6,7 +6,7 @@ networks:
 
 services:
   catalog:
-    image: eventbrite/eventcatalogapi
+    image: events/catalogapi
     build:
       context: .\EventCatalogAPI
       dockerfile: Dockerfile
@@ -14,10 +14,10 @@ services:
       DatabaseServer: mssqlserver
       DatabaseName: EventCatalogDb
       DatabaseUser: sa
-      DatabasePassword: EventApi(!)
-      ExternalCatalogBaseUrl: http://localhost:7000
+      DatabasePassword: ProductApi(!)
+      ExternalCatalogBaseUrl: http://localhost:6083
     ports:
-      - "7000:80"
+      - "6083:80"
     container_name: eventcatalogapi
     networks:
       - backend
@@ -25,32 +25,33 @@ services:
     depends_on:
       - mssqlserver
 
+ 
   webmvc:
     build:
       context: .\webmvc
       dockerfile: Dockerfile
-    image: jewels/webmvc
+    image: events/webmvc
     container_name: webshop
     environment:
       CatalogUrl: http://catalog
       ASPNETCORE_ENVIRONMENT: Development
+        
     ports:
-      - "5209:80"
+      - "52802:80"
     networks:
       - frontend
     depends_on:
       - catalog
-
+     
+   
   mssqlserver:
     image: "microsoft/mssql-server-linux:latest"
     environment:
       ACCEPT_EULA: Y
-      SA_PASSWORD: EventApi(!)
-    container_name: eventssqlserver
+      SA_PASSWORD: ProductApi(!)
+    container_name: eventsqlserver
     ports:
-      - "1450:1433"
+      - "1453:1433"
     networks:
       - backend
 
-      
-      

@@ -50,10 +50,11 @@ namespace EventCatalogAPI.Controllers
         }
 
         [HttpGet]
-        [Route("[action]/type/{eventTypeId}/category/{eventCategoryId}/location/{city}/Date/{startDatestr}/{endDatestr}")]
+        [Route("[action]/type/{eventTypeId}/category/{eventCategoryId}/Name/{namePrefix}/location/{city}/Date/{startDatestr}/{endDatestr}")]
         public async Task<IActionResult> Events(
         int? eventTypeId,
         int? eventCategoryId,
+        string namePrefix,
         string city,
         string startDateStr,
         string endDateStr,
@@ -70,6 +71,10 @@ namespace EventCatalogAPI.Controllers
             {
                 root =
                     root.Where(e => e.EventCategoryId == eventCategoryId);
+            }
+            if(!String.IsNullOrEmpty(namePrefix))
+            {
+                root = root.Where(e => e.Name.StartsWith(namePrefix));
             }
 
             if (!String.IsNullOrEmpty(city))
