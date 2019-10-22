@@ -14,7 +14,11 @@ namespace WebMVC.Controllers
         private readonly ICatalogService _service;
         public EventCatalogController(ICatalogService service) =>
             _service = service;
-          public async Task<IActionResult> Index(
+        public async Task<IActionResult> About()
+        {
+            return View();
+        }
+        public async Task<IActionResult> Index(
             int? categoryFilterApplied,
             int? typesFilterApplied,
             int? page,
@@ -53,5 +57,6 @@ namespace WebMVC.Controllers
             return View(vm);
         }
 
+       
     }
 }
