@@ -58,6 +58,8 @@ namespace EventCatalogAPI.Migrations
                     b.Property<string>("Description")
                         .IsRequired();
 
+                    b.Property<int>("EventCapacity");
+
                     b.Property<int>("EventCategoryId");
 
                     b.Property<int>("EventTypeId");

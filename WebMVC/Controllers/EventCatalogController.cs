@@ -22,13 +22,14 @@ namespace WebMVC.Controllers
             int? categoryFilterApplied,
             int? typesFilterApplied,
             int? page,
+            string NameFilterApplied,
           string cityFilterApplied,
           string DateFilterApplied)
         {
             var itemsOnPage = 10;
             var catalog =
                 await _service.GetEventItemsAsync(page ?? 0,
-                itemsOnPage, categoryFilterApplied, typesFilterApplied,cityFilterApplied,DateFilterApplied);
+                itemsOnPage, categoryFilterApplied, typesFilterApplied,cityFilterApplied,NameFilterApplied,DateFilterApplied);
 
 
             var vm = new EventCatalogIndexViewModel
@@ -45,6 +46,7 @@ namespace WebMVC.Controllers
                 Types = await _service.GetTypesAsync(),
                 Locations=await _service.GetLocationsAsync(),
                 CategoryFilterApplied = categoryFilterApplied ?? 0,
+                NameFilterApplied = NameFilterApplied ?? " ",
                 TypesFilterApplied = typesFilterApplied ?? 0,
                 CityFilterApplied = cityFilterApplied ?? " ",
                 DateFilterApplied = DateFilterApplied??" ",

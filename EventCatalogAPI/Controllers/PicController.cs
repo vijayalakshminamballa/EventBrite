@@ -33,10 +33,9 @@ namespace EventCatalogAPI.Controllers
         }
 
         // POST: api/Image
-        [HttpPost]
-        public async Task Post(IFormFile file)
+        [HttpPost("{id}")]
+        public async Task Post(IFormFile file, int id)
         {
-            int id = 1;
             var webRoot = _env.WebRootPath;
             var uploads = Path.Combine($"{webRoot}/Pics/", $"pic{id}.jpg");
             if (file.Length > 0)

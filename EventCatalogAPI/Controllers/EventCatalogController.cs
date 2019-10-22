@@ -50,10 +50,11 @@ namespace EventCatalogAPI.Controllers
         }
 
         [HttpGet]
-        [Route("[action]/type/{eventTypeId}/category/{eventCategoryId}/location/{city}/Date/{startDatestr}/{endDatestr}")]
+        [Route("[action]/type/{eventTypeId}/category/{eventCategoryId}/Name/{namePrefix}/location/{city}/Date/{startDatestr}/{endDatestr}")]
         public async Task<IActionResult> Events(
         int? eventTypeId,
         int? eventCategoryId,
+        string namePrefix,
         string city,
         string startDateStr,
         string endDateStr,
@@ -71,6 +72,10 @@ namespace EventCatalogAPI.Controllers
                 root =
                     root.Where(e => e.EventCategoryId == eventCategoryId);
             }
+            if(!String.IsNullOrEmpty(namePrefix))
+            {
+                root = root.Where(e => e.Name.StartsWith(namePrefix));
+            }
 
             if (!String.IsNullOrEmpty(city))
             {
@@ -78,16 +83,11 @@ namespace EventCatalogAPI.Controllers
                     root.Where(e => e.City == city);
             }
 
-            if (!string.IsNullOrWhiteSpace(startDateStr))
+            if (!String.IsNullOrEmpty(startDateStr) && !String.IsNullOrEmpty(endDateStr))
             {
                 DateTime StartDate = DateTime.ParseExact(startDateStr, "yyyyMMdd", CultureInfo.InvariantCulture);
-                root = root.Where(e => e.Date >= StartDate);
-            }
-
-            if (!string.IsNullOrWhiteSpace(endDateStr))
-            {
                 DateTime EndDate = DateTime.ParseExact(endDateStr, "yyyyMMdd", CultureInfo.InvariantCulture);
-                root = root.Where(e => e.Date <= EndDate);
+                root = root.Where(e => e.Date >= StartDate && e.Date <= EndDate);
             }
 
             var eventsCount = await
@@ -135,6 +135,7 @@ namespace EventCatalogAPI.Controllers
             };
             return Ok(model);
         }
+
 
         [HttpPost]
         [Route("[action]")]
@@ -286,17 +287,5 @@ namespace EventCatalogAPI.Controllers
 
             return Ok(cities);
         }
-
-      
     }
 }
-
-
-
-
-
-
-
-
-
-
