@@ -34,8 +34,6 @@ namespace EventCatalogAPI
             var connectionString = $"Server={server};Database={database};User ID={user};Password={password}";
             services.AddDbContext<CatalogEventContext>(options =>
                     options.UseSqlServer(connectionString));
-
-
             services.AddSwaggerGen(options =>
             { 
                 options.DescribeAllEnumsAsStrings();

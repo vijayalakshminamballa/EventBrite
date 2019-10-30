@@ -7,6 +7,23 @@ namespace WebMVC.Infrastructure
 {
     public class ApiPaths
     {
+        public static class Basket
+        {
+            public static string GetBasket(string baseUri, string basketId)
+            {
+                return $"{baseUri}/{basketId}";
+            }
+
+            public static string UpdateBasket(string baseUri)
+            {
+                return baseUri;
+            }
+
+            public static string CleanBasket(string baseUri, string basketId)
+            {
+                return $"{baseUri}/{basketId}";
+            }
+        }
         public static class Catalog
         {
             public static string GetAllTypes(string baseUri)
@@ -103,13 +120,10 @@ namespace WebMVC.Infrastructure
                 return $"{baseUri}Events{filterQs}?pageIndex={page}&pageSize={take}";
 
             }
-
-
         }
-
     }
 
-    }
+}
 
 
 

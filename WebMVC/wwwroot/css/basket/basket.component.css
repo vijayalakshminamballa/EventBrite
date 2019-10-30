@@ -18,7 +18,7 @@
 
 .esh-basket-items--border {
     border-bottom: 1px solid #EEEEEE;
-    padding: .5rem 0;
+    padding: .1rem 0;
 }
 
     .esh-basket-items--border:last-of-type {
@@ -27,11 +27,11 @@
 
 .esh-basket-item {
     font-size: 1rem;
-    font-weight: 300;
+    font-weight: 100;
 }
 
 .esh-basket-item--middle {
-    line-height: 8rem;
+    line-height: 5rem;
 }
 
 @media screen and (max-width: 1024px) {
@@ -60,9 +60,9 @@
     color: #FFFFFF;
     display: inline-block;
     font-size: 1rem;
-    font-weight: 400;
+    font-weight: 100;
     margin-top: 1rem;
-    padding: 1rem 1.5rem;
+    padding: 0.5rem 0.5rem;
     text-align: center;
     text-transform: uppercase;
     transition: all 0.35s;
@@ -74,5 +74,5 @@
 }
 
 .esh-basket-margin12{
-    margin-left: 12px;
+    margin-left: 20px;
 }

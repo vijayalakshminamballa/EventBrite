@@ -40,6 +40,8 @@ namespace WebMVC
             services.AddTransient<ICatalogService, CatalogService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IIdentityService<ApplicationUser>, IdentityService>();
+            services.AddTransient<IWishListService, WishListService>();
+
             var identityUrl = Configuration.GetValue<string>("IdentityUrl");
             var callBackUrl = Configuration.GetValue<string>("CallBackUrl");
             services.AddAuthentication(options =>
@@ -93,6 +95,8 @@ namespace WebMVC
             }
 
             app.UseStaticFiles();
+            app.UseAuthentication();
+
             app.UseCookiePolicy();
 
             app.UseMvc(routes =>

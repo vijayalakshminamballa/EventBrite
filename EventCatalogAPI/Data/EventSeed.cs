@@ -9,10 +9,9 @@ namespace EventCatalogAPI.Data
 {
     public class EventSeed
     {
-
         public static void Seed(CatalogEventContext context)
         {
-            context.Database.Migrate();
+         context.Database.Migrate();
             if (!context.EventCategories.Any())
             {
                 context.EventCategories.AddRange
