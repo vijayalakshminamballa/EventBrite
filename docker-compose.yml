@@ -61,6 +61,34 @@ services:
       - basket.data
       - tokenserver
 
+  order:
+    build:
+      context: .\BookingApi
+      dockerfile: Dockerfile
+    image: events/bookingapi
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      IdentityUrl: http://192.168.0.10:6070
+      SQLSERVER_HOST: mssqlserver
+      SA_PASSWORD: ProductApi(!)
+      DATABASE: OrdersDb
+    ports:
+      - "6100:80"
+    container_name: bookingapi
+    networks:
+      - backend
+      - frontend
+    depends_on:
+      - mssqlserver
+      - tokenserver
+      - rabbitmq
+     
+
   webmvc:
     build:
       context: .\webmvc
@@ -73,6 +101,9 @@ services:
       IdentityUrl: http://192.168.0.10:6070
       CallBackUrl: http://localhost:5208
       WishListUrl: http://cart
+      OrderUrl: http://order
+      StripePublicKey: pk_test_OxsTPKQ2iceJBkZ0MIAkguml00yIRNYlNF
+      StripePrivateKey: pk_test_OxsTPKQ2iceJBkZ0MIAkguml00yIRNYlNF
 
     ports:
       - "5208:80"
@@ -82,6 +113,7 @@ services:
       - catalog
       - tokenserver
       - cart
+      - order
      
   mssqlserver:
     image: "microsoft/mssql-server-linux:latest"

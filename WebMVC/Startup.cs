@@ -41,6 +41,7 @@ namespace WebMVC
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IIdentityService<ApplicationUser>, IdentityService>();
             services.AddTransient<IWishListService, WishListService>();
+            services.AddTransient<IBookingService, BookingService>();
 
             var identityUrl = Configuration.GetValue<string>("IdentityUrl");
             var callBackUrl = Configuration.GetValue<string>("CallBackUrl");
