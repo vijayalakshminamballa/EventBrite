@@ -114,7 +114,19 @@ namespace WebMVC.Services
         }
 
 
+        public Task<int> CreatEventItem(EventItem item)
+        {
+
+            var addNewOrderUri = ApiPaths.Catalog.CreateItem(_baseUri);
 
 
+            var response = _client.PostAsync(addNewOrderUri, item);
+            if (response.IsCompleted)
+            {
+                throw new Exception("Error creating order, try later.");
+            }
+
+            return null;
+        }
     }
 }

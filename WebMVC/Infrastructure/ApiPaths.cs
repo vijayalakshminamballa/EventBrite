@@ -142,6 +142,11 @@ namespace WebMVC.Infrastructure
                 return $"{baseUri}Events{filterQs}?pageIndex={page}&pageSize={take}";
 
             }
+
+            internal static object CreateItem(string baseUri)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 
