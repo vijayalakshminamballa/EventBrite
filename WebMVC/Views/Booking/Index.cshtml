@@ -1,4 +1,3 @@
-
 @using WebMVC.Models.BookingModels
 
 @using WebMVC.ViewModels
@@ -8,7 +7,7 @@
     }
     <div class="esh-orders">
         @Html.Partial("_Header", new List<Header>() {
-        new Header() { Controller = "Catalog", Text = "Back to catalog" },
+        new Header() { Controller = "EventCatalog", Text = "Back to catalog" },
         new Header() { Text = " / " }
          })
         <div class="container">
@@ -27,7 +26,7 @@
                     <section class="esh-orders-item col-xs-2">$ @Html.DisplayFor(modelItem => item.OrderTotal)</section>
                     <section class="esh-orders-item col-xs-2">@Html.DisplayFor(modelItem => item.OrderStatus)</section>
                     <section class="esh-orders-item col-xs-2">
-                        <a class="esh-orders-link" asp-controller="Order" asp-action="Detail" asp-route-orderId="@item.OrderId">Detail</a>
+                        <a class="esh-orders-link" asp-controller="Booking" asp-action="Detail" asp-route-orderId="@item.OrderId">Detail</a>
                     </section>
                 </article>
             }

@@ -60,12 +60,13 @@ services:
     depends_on:
       - basket.data
       - tokenserver
+      - rabbitmq
 
   order:
     build:
-      context: .\BookingApi
+      context: .\OrderApi
       dockerfile: Dockerfile
-    image: events/bookingapi
+    image: jewels/orderapi
     logging:
       driver: "json-file"
       options:
@@ -78,8 +79,8 @@ services:
       SA_PASSWORD: ProductApi(!)
       DATABASE: OrdersDb
     ports:
-      - "6100:80"
-    container_name: bookingapi
+      - "6075:80"
+    container_name: orderapi
     networks:
       - backend
       - frontend
@@ -87,7 +88,6 @@ services:
       - mssqlserver
       - tokenserver
       - rabbitmq
-     
 
   webmvc:
     build:
@@ -102,8 +102,8 @@ services:
       CallBackUrl: http://localhost:5208
       WishListUrl: http://cart
       OrderUrl: http://order
-      StripePublicKey: pk_test_OxsTPKQ2iceJBkZ0MIAkguml00yIRNYlNF
-      StripePrivateKey: pk_test_OxsTPKQ2iceJBkZ0MIAkguml00yIRNYlNF
+      StripePublicKey: pk_test_EwW5PGTjdQYus9hHNxhSblk800xJyThGVU
+      StripePrivateKey: sk_test_M2Uo2OjAXpcOj7Rm1TbYrD1Q007cS3hbwj
 
     ports:
       - "5208:80"
@@ -130,6 +130,19 @@ services:
     image: redis
     ports:
       - "6079:6379"  
+    networks:
+      - backend 
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    hostname: myrabbitmq
+    ports:
+      - "15673:15672"
+      - "5673:5672"
+      - "5674:5671"
+    volumes:
+      - ~/rabbitmq:/var/lib/rabbitmq/mnesia   
     networks:
       - backend 
 

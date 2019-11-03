@@ -7,6 +7,28 @@ namespace WebMVC.Infrastructure
 {
     public class ApiPaths
     {
+        public static class Order
+        {
+            public static string GetOrder(string baseUri, string orderId)
+            {
+                return $"{baseUri}/{orderId}";
+            }
+
+            //public static string GetOrdersByUser(string baseUri, string userName)
+            //{
+            //    return $"{baseUri}/userOrders?userName={userName}";
+            //}
+            public static string GetOrders(string baseUri)
+            {
+                return baseUri;
+            }
+            public static string AddNewOrder(string baseUri)
+            {
+                return $"{baseUri}/new";
+            }
+        }
+
+
         public static class Basket
         {
             public static string GetBasket(string baseUri, string basketId)
@@ -119,26 +141,6 @@ namespace WebMVC.Infrastructure
                 }
                 return $"{baseUri}Events{filterQs}?pageIndex={page}&pageSize={take}";
 
-            }
-        }
-        public static class Order
-        {
-            public static string GetOrder(string baseUri, string orderId)
-            {
-                return $"{baseUri}/{orderId}";
-            }
-
-            //public static string GetOrdersByUser(string baseUri, string userName)
-            //{
-            //    return $"{baseUri}/userOrders?userName={userName}";
-            //}
-            public static string GetOrders(string baseUri)
-            {
-                return baseUri;
-            }
-            public static string AddNewOrder(string baseUri)
-            {
-                return $"{baseUri}/new";
             }
         }
     }
